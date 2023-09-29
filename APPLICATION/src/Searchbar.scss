@@ -1,0 +1,63 @@
+
+
+@import "shared";
+#buttonContainer {
+    background-color: white !important;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+    display: none;
+}
+
+.clear-input-button{
+    border: none;
+    width: 20px;
+    height: 20px;
+    opacity: 0.65;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+.search-container{
+    height: 6em;
+}
+
+.btn-light {
+    object-fit: cover;
+}
+
+.search-icon{
+    width:25px;
+    height:25px;
+    fill:black;
+    opacity: 0.65;
+}
+
+.suggestion-box{
+    max-height: 30em;
+    overflow: auto;
+    scroll-behavior: auto;
+}
+
+.suggestion{
+    border: none;
+    margin: 0.1em;
+    padding: 0.2em 0.4em;
+    border-radius: 1em;
+    cursor: pointer;
+    &:hover, &:focus{
+        background-color: lightgray;
+    }
+}
+
+.animate-height{
+    transition: max-height 0.2s;
+}
+
+.outlineBorder {
+    border: 2px solid $base-color;
+    border-radius: 30px;
+    padding: 0.5em;
+}
+
