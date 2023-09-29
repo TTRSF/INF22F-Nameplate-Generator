@@ -2,8 +2,12 @@
 Software Engineering 1
 
 # Roles
-Projektleiter: Flo  
-Testmanager: Thomas  
+Project Lead: Flo  
+Test managament: Thomas  
 Developer: Robin  
-Dokumentationleiter: Tristan  
-Architekmanager: Simon  
+Documentation: Tristan  
+Architecture: Simon  
+
+# Previous Project
+
+this project is based on work from a [previous lecture](github.com/mk28/TINF21C_Team2_AAS_digital_nameplate)
