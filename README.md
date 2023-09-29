@@ -3,7 +3,7 @@ Software Engineering 1
 
 # Roles
 Projektleiter: Flo  
-Ultimativer Lizensiertert Testmanager: Dip. Ing. Dr. Prof. Thomas Ekhardt  
+Testmanager: Thomas
 Developer: Robin  
 Dokumentationleiter: Tristan  
 Architekmanager: Simon  
