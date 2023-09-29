@@ -1,2 +1,2 @@
-# INF22F-Nameplate-Generator
+# TINF22F-Nameplate-Generator
 Software Engineering 1
