@@ -15,11 +15,12 @@ Furthermore, a user-friendly front-end application, set up on the host system, s
 
 ## Design and Software development by
 
-* Team Lead: Adrian Khairi
-* Test Manager: Janin Ahlemeyer
-* System Architect & Software Developer: Mika Kuge
-* Technical Documentation: Maris Koch
-* Product Manager: Erika Zhang
+* Product Manager: Florian Dörr
+* Test Manager: Thomas Ekhardt  
+* System Architect: Simon Luz
+* Software Developer: Robin Ernst
+* Technical Documentation: Tristan Kopp
+
 
 <p align="center">
 <img src="https://github.com/mk28/TINF21C_Team2_AAS_digital_nameplate/blob/6e434676f0f8ec56bd9363a70fcf87058b3255a9/PROJECT/Swe_logo.png" width="250" height="250" />
