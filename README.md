@@ -2,8 +2,8 @@
 Software Engineering 1
 
 # Roles
-Projektleiter: Flo
-Ultimativer Lizensiertert Testmanager: Thomas
-Developer: Robin
-Dokumentationleiter: Tristan
-Architekmanager: Simon
+Projektleiter: Flo  
+Ultimativer Lizensiertert Testmanager: Thomas  
+Developer: Robin  
+Dokumentationleiter: Tristan  
+Architekmanager: Simon  
