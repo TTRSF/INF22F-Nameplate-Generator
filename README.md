@@ -1,4 +1,4 @@
-# TINF21C_Team2_AAS_digital_nameplate
+# TINF22F_Team2_Nameplate_Generator
 
 ![B84G-4GK-AP3-RME](https://github.com/mk28/TINF21C_Team2_AAS_digital_nameplate/assets/96543571/3891a76b-a111-4231-b7fb-fb5489ceb1cf)
 
