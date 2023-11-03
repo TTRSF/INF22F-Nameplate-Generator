@@ -10,8 +10,17 @@ It is a project created in the scope of the course "Software Engineering" at Bad
 A Server for testing the application can be found at [https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/](https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/)
 
 ## Goals
-The main objective of this project is to create a nameplate generator for an Asset Administration Shell, also known as "AAS". The application shall be able to create graphical illustrations based on the properties provided by the AAS as well as the ability to generate QR codes according to the DIN standard.  
-Furthermore, a user-friendly front-end application, set up on the host system, shall be designed and implemented utilizing React. This includes a home page where the user can enter a server address. After selecting the server, the user shall be directed to a user interface (UI) listing all the components available on the server. Additionally, the interface shall display the data regarding the asset chosen by the user in an organized and clear structure. The interface allows the communication between any AAS server through REST-API. Additionally, there shall be an option to download the nameplate in SVG or PNG format. The application shall be tested to ensure compatibility with a diverse AAS server infrastructure. Forbye, the project shall provide a [User Manual](https://github.com/mk28/TINF21C_Team2_AAS_digital_nameplate/wiki/User-Manual) documentation online. 
+The main objective of this project is to create a REST-API for the nameplate-generator.
+
+The REST-API should generate and return a nameplate of the requested product. For that the REST-API has to communicate with another API to get relevant data of the product. The API needs the name of the product and returns with that information the nameplate.
+
+The nameplate should contain all labels, for example safety labels, and a QR code which delivers all informations about the product, for example the website, the phone number and the adress of the responible company.
+
+The REST-API should be implemented on the web application for presentation.
+
+Another goal is the fixing of bugs in the generation of the nameplates and some labels should be added.
+<!--The main objective of this project is to create a nameplate generator for an Asset Administration Shell, also known as "AAS". The application shall be able to create graphical illustrations based on the properties provided by the AAS as well as the ability to generate QR codes according to the DIN standard.  
+Furthermore, a user-friendly front-end application, set up on the host system, shall be designed and implemented utilizing React. This includes a home page where the user can enter a server address. After selecting the server, the user shall be directed to a user interface (UI) listing all the components available on the server. Additionally, the interface shall display the data regarding the asset chosen by the user in an organized and clear structure. The interface allows the communication between any AAS server through REST-API. Additionally, there shall be an option to download the nameplate in SVG or PNG format. The application shall be tested to ensure compatibility with a diverse AAS server infrastructure. Forbye, the project shall provide a [User Manual](https://github.com/mk28/TINF21C_Team2_AAS_digital_nameplate/wiki/User-Manual) documentation online. -->
 
 ## Design and Software development by
 
