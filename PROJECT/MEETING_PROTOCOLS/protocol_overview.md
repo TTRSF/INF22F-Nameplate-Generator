@@ -253,3 +253,45 @@ Thomas Ekhardt is ill.
 |Robin Ernst|BC & prepare for presentation|
 |Thomas Ekhardt|prepare for presentation (ill)|
 |Tristan Kopp|Write protocols & Update ReadMe & prepare for presentation|
+
+# Meeting  Protocol  of 10.11.2023  <a name="10_11"></a>
+
+## Type of Meeting
+This meeting was a ```Weekly```.
+
+## Protocol Writer
+This protocol was written by ```Tristan Kopp```.
+
+## Meeting Participants
+
+* Florian Dörr
+* Simon Lutz 
+* Robin Ernst
+* Thomas Ekhardt
+* Tristan Kopp 
+
+## Meeting Duration
+This meeting took ```1 hour```.
+
+## Agenda and Summary
+
+|Agenda          |Summary                      |
+|----------------|-----------------------------|
+|Progress since 03.11.2023|presentation was prepared and held|
+|Presentation|got a lot of feedback (CRS, SRS, PSP, presentation)|
+|New Tasks|see [Work Progress](#10_11_WP)|
+
+## Problems
+No problems to mention.
+
+
+## Work Progress <a name="10_11_WP"></a>
+
+
+|Name            |Task                              |
+|----------------|----------------------------------|
+|Florian Dörr |implement feedback|
+|Simon Lutz|implement feedback|
+|Robin Ernst|implement feedback|
+|Thomas Ekhardt|implement feedback|
+|Tristan Kopp|implement feedback|
