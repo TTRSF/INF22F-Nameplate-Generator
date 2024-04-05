@@ -38,7 +38,7 @@ const server = http.createServer(async (req, res) => {
                     j = JSON.parse(data);
                     console.log("PARSING")
                 });
-            console.log(j);
+            // console.log(j);
 
             const nameplate = NameplateGenerator.nameplateBootstrap(j, "testNR1")
 

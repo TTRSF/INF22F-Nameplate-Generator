@@ -11,8 +11,8 @@ module.exports = class NameplateSupplier {
      * @param id (optional) id of the SVG element
      * @returns {SVGSVGElement} SVG element of given specifications
      */
-    static initSvg(xSize, ySize, border, id, isQR) {
-        const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
+    static initSvg(xSize, ySize, border, id, isQR, dom) {
+        // const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
         const svg = dom.window.document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
         if (isQR) {
@@ -88,7 +88,7 @@ module.exports = class NameplateSupplier {
      * @param data data according to README.md specification
      * @param nameplateSvg
      */
-    static writeHeadingToSvg(data, nameplateSvg) {
+    static writeHeadingToSvg(data, nameplateSvg, dom) {
         const idShort_xSpace = 20;
         const idShort_ySpace = 35;
         const idShort_fontSize = 30;
@@ -100,7 +100,7 @@ module.exports = class NameplateSupplier {
         // TODO: find best maxChars for MPD
         const MPD_maxChars = 100;
 
-        const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
+        // const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
 
         const header = {};
         if (data['OrderCode'] && data['OrderCode'].length < idShort_maxChars) {
@@ -140,7 +140,7 @@ module.exports = class NameplateSupplier {
      * @param input data according to README.md specification
      * @param nameplateSvg the nameplate svg element
      */
-    static writeTextToSvg(input, nameplateSvg) {
+    static writeTextToSvg(input, nameplateSvg, dom) {
         const data = structuredClone(input);
         const maxDisplay = 16;
         // TODO: richtige maximale anzahl an chars per line finden für Darstellung
@@ -151,7 +151,7 @@ module.exports = class NameplateSupplier {
         const xSpace = 20;
         const ySpace = 105;
 
-        const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
+        // const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
 
         const priorityDisplay = ['TelephoneNumber', 'EmailAddress', 'AddressOfAdditionalLink', 'AssetRef'];
         const displayWithoutIdentifier = ['id'];
@@ -249,8 +249,8 @@ module.exports = class NameplateSupplier {
      * @param links Array of links to all the marking images that shall be displayed on the nameplate
      * @returns {Promise<string[]>} Promise resolving to array of dataUrls of images
      */
-    static convertFilePathsToDataUrls(links) {
-        const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
+    static convertFilePathsToDataUrls(links, dom) {
+        // const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
         return new Promise((resolve, reject) => {
             const promises = links.map((link) => {
                 return new Promise((resolve) => {
@@ -284,9 +284,9 @@ module.exports = class NameplateSupplier {
      * @param markings markings according to README.md specification
      * @returns {Promise<string[]>} Promise resolving to array of dataUrls of images
      */
-    static extractAllImagesFromMarkings(markings) {
+    static extractAllImagesFromMarkings(markings, dom) {
         const filePaths = this.extractFilePathsFromMarkings(markings);
-        return this.convertFilePathsToDataUrls(filePaths);
+        return this.convertFilePathsToDataUrls(filePaths, dom);
     }
 
     /**
@@ -294,7 +294,7 @@ module.exports = class NameplateSupplier {
      * @param markingImages extracted FilePath values according to function extractImagesFromMarkings()
      * @param nameplateSvg the nameplate svg - markings are displayed on here
      */
-    static displayMarkingImages(markingImages, nameplateSvg) {
+    static displayMarkingImages(markingImages, nameplateSvg, dom) {
         const maxDisplay = 7;
         // following values are in pixels
         const height = 100;
@@ -303,7 +303,7 @@ module.exports = class NameplateSupplier {
         const ySpace = 485;
         const space = 20;
 
-        const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
+        // const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
 
         const limit = markingImages.length < maxDisplay ? markingImages.length : maxDisplay;
 

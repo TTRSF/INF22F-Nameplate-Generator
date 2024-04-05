@@ -15,7 +15,7 @@ module.exports = class NameplateGenerator {
         // data and markings according to README.md specification
         // data is according to "Reduced Data"
         let data = {}, markings = {};
-        ({obj: data, markings} = DataTransformer.transformDataToArray(rawData));
+        ({ obj: data, markings } = DataTransformer.transformDataToArray(rawData));
 
         // generates the nameplate and injects it into 'id'
         return this.generateNameplate(data, markings, id);
@@ -38,7 +38,7 @@ module.exports = class NameplateGenerator {
 
         // this is the root svg in which the nameplate is build
         // TODO: Disable border again
-        const nameplateSvg = NameplateSupplier.initSvg(this.nameplateWidth, this.nameplateHeight, true, 'nameplateSvg', false);
+        const nameplateSvg = NameplateSupplier.initSvg(this.nameplateWidth, this.nameplateHeight, true, 'nameplateSvg', false, dom);
 
         // this transforms the data & markings into one single string with linebreaks ('\n')
         // this is the content of the qr-code
@@ -47,25 +47,25 @@ module.exports = class NameplateGenerator {
         // this svg warps around the qr-code svg
         // it is mainly used for styling and positioning
         // make sure, that this svg is square, otherwise positioning will be off!!!
-        const qrCodeSvg = NameplateSupplier.initSvg(qrCodeSize + 'px', qrCodeSize + 'px', false, 'qrCodeSvg', true);
+        const qrCodeSvg = NameplateSupplier.initSvg(qrCodeSize + 'px', qrCodeSize + 'px', false, 'qrCodeSvg', true, dom);
         // these two attributes manage the offset inside the 'nameplateSvg' from the top-left corner
         qrCodeSvg.setAttribute('x', qrCodeOffsetX + 'px');
         qrCodeSvg.setAttribute('y', qrCodeOffsetY + 'px');
 
         // takes all key-value pairs from data and writes them into the given svg
-        NameplateSupplier.writeHeadingToSvg(data, nameplateSvg);
-        NameplateSupplier.writeTextToSvg(data, nameplateSvg);
+        NameplateSupplier.writeHeadingToSvg(data, nameplateSvg, dom);
+        NameplateSupplier.writeTextToSvg(data, nameplateSvg, dom);
 
         // extracts the FilePaths from the markings
         // this is where the images are stored
         // const markingImages = extractFilePathsFromMarkings(markings);
-        NameplateSupplier.extractAllImagesFromMarkings(markings).then((markingImages) => {
+        NameplateSupplier.extractAllImagesFromMarkings(markings, dom).then((markingImages) => {
             // displays the markings on the nameplate (svg)
-            NameplateSupplier.displayMarkingImages(markingImages, nameplateSvg);
+            NameplateSupplier.displayMarkingImages(markingImages, nameplateSvg, dom);
         });
 
         //creates the border around the qr-code
-        const border = this.createBorderForQRCode();
+        const border = this.createBorderForQRCode(dom);
 
         // the svg's are appended to the DOM before the qr-code is created, because the 'makeQrCode()' function needs to find
         // the svg-elements by 'document.getElementById()'
@@ -78,7 +78,7 @@ module.exports = class NameplateGenerator {
         // makes the qr-code svg and injects it into the 'qrCodeSvg' element
         // the qr-code svg will be wrapped by the 'qrCodeSvg', which is mainly used for styling
 
-        this.makeQrCode(qrCodeString, domElement);
+        this.makeQrCode(qrCodeString, qrCodeSvg);
         return domElement;
     }
 
@@ -102,13 +102,13 @@ module.exports = class NameplateGenerator {
         })
     }
 
-    static createBorderForQRCode() {
+    static createBorderForQRCode(dom) {
         const qrCodeSize = 400;
         const qrCodeOffsetX = 500;
         const qrCodeOffsetY = 85;
         const strokeWidth = 6;
         const svgns = "http://www.w3.org/2000/svg"; // SVG namespace
-        const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
+        // const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
         const parent = dom.window.document.createElementNS(svgns, "svg");
         const rect = dom.window.document.createElementNS(svgns, "rect");
         rect.setAttribute("x", `${strokeWidth / 2}`);
@@ -144,25 +144,25 @@ module.exports = class NameplateGenerator {
     /**
      * Starts the download of the nameplate with svg file format
      */
-    static downloadSvg() {
-        const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
+    static downloadSvg(dom) {
+        // const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
         const nameplateSvg = dom.window.document.getElementById('nameplateSvg');
         const nameplateCopy = nameplateSvg.cloneNode(true);
         NameplateGenerator.prepareNameplateForDownload(nameplateCopy)
-        NameplateGenerator.downloadPlate('svg', NameplateSupplier.CURRENT_IDSHORT, nameplateCopy, null, null);
+        NameplateGenerator.downloadPlate('svg', NameplateSupplier.CURRENT_IDSHORT, nameplateCopy, null, null, dom);
     }
 
     /**
      * Starts the download of the nameplate with png file format
      */
-    static downloadPng() {
-        const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
+    static downloadPng(dom) {
+        // const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
         const nameplateSvg = dom.window.document.getElementById('nameplateSvg');
         const nameplateCopy = nameplateSvg.cloneNode(true);
         NameplateGenerator.prepareNameplateForDownload(nameplateCopy)
         const height = parseInt(nameplateCopy.getAttribute('height'));
         const width = parseInt(nameplateCopy.getAttribute('width'));
-        NameplateGenerator.downloadPlate('png', NameplateSupplier.CURRENT_IDSHORT, nameplateCopy, width, height);
+        NameplateGenerator.downloadPlate('png', NameplateSupplier.CURRENT_IDSHORT, nameplateCopy, width, height, dom);
     }
 
     /**
@@ -181,8 +181,8 @@ module.exports = class NameplateGenerator {
      * @param data DataURL to download
      * @param name Name of download file
      */
-    static startDownload(data, name) {
-        const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
+    static startDownload(data, name, dom) {
+        // const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
         const a = dom.window.document.createElement('a');
         a.href = data;
         a.download = name
@@ -197,14 +197,14 @@ module.exports = class NameplateGenerator {
      * @param PNG_width Width of final PNG
      * @param PNG_height Height of final PNG
      */
-    static downloadPlate(type, name, nameplateSvg, PNG_width, PNG_height) {
+    static downloadPlate(type, name, nameplateSvg, PNG_width, PNG_height, dom) {
         switch (type) {
             case 'svg':
                 let svgDataUrl = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(new XMLSerializer().serializeToString(nameplateSvg));
-                NameplateGenerator.startDownload(svgDataUrl, name + '.svg');
+                NameplateGenerator.startDownload(svgDataUrl, name + '.svg', dom);
                 break;
             case 'png':
-                this.createPNG(PNG_width, PNG_height, nameplateSvg, name, NameplateGenerator.startDownload);
+                this.createPNG(PNG_width, PNG_height, nameplateSvg, name, NameplateGenerator.startDownload, dom);
                 break;
             default:
                 console.error(`Type ${type} not supported.`);
@@ -219,8 +219,8 @@ module.exports = class NameplateGenerator {
      * @param name Name of download file
      * @param callback Reference to the actual downloading function startDownload()
      */
-    static createPNG(width, height, contents, name, callback) {
-        const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
+    static createPNG(width, height, contents, name, callback, dom) {
+        // const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
         const src = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(new XMLSerializer().serializeToString(contents));
 
         const canvas = dom.window.document.createElement('canvas');
@@ -236,7 +236,7 @@ module.exports = class NameplateGenerator {
 
         img.onload = function () {
             context.drawImage(img, 0, 0);
-            callback(canvas.toDataURL('image/png'), name + '.png');
+            callback(canvas.toDataURL('image/png'), name + '.png', dom);
             canvas.remove();
         };
         img.setAttribute('src', src);
