@@ -16,13 +16,18 @@ The objective of this test plan is to thoroughly test all functions in all JavaS
 
 ## 4. Test Cases:
 
-### 4.1. Test Case 1: Functionality Testing
+### 4.1. Test Suite 1: Functionality Testing
 - **Description:** Test the functionality of each function to ensure that it performs the intended task correctly.
 - **Steps:**
   1. Identify all JavaScript files containing functions to be tested.
   2. Write individual unit tests for each function in the identified files, covering different input scenarios and edge cases.
   3. Execute the tests using Jest or any preferred test runner.
 - **Expected Result:** All functions should pass their respective unit tests without errors.
+
+#### TC01.01 QR Code Generation
+FR.004
+#### TC01.02 Nameplate Generation
+FR.005
 
 ### 4.2. Test Case 2: Error Handling
 - **Description:** Test the error handling capabilities of functions to ensure that they handle invalid inputs or unexpected conditions gracefully.
