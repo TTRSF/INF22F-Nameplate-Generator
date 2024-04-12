@@ -2,7 +2,7 @@
 // same goes for 'productImages'
 
 
-export default class DataTransformer {
+module.exports = class DataTransformer {
     static FILTER_KEYS = ["nameplateId", "num", "Nameplate.idShort", "Nameplate.id", "productImages", "idEncoded", "TypeOf", "Present", "Logo", "File", "POBox", "Department", "AvailableTime", "FaxNumber", "PublicKey"];
 
     static transformDataToArray(obj) {

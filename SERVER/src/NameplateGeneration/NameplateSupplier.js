@@ -1,4 +1,6 @@
-export default class NameplateSupplier {
+const jsdom = require("jsdom")
+
+module.exports = class NameplateSupplier {
     static CURRENT_IDSHORT = 'Nameplate';
 
     /**
@@ -9,8 +11,9 @@ export default class NameplateSupplier {
      * @param id (optional) id of the SVG element
      * @returns {SVGSVGElement} SVG element of given specifications
      */
-    static initSvg(xSize, ySize, border, id, isQR) {
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    static initSvg(xSize, ySize, border, id, isQR, dom) {
+        // const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
+        const svg = dom.window.document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
         if (isQR) {
             svg.setAttribute('width', xSize);
@@ -31,11 +34,11 @@ export default class NameplateSupplier {
 
     /**
      * Appends the 'element' as a child to the DOM element with the given 'id'.
-     * @param id is the ID of the DOM element in which the given 'element' will be injected into
+     * @param parent DOM element in which the given 'element' will be injected into
      * @param element element ot be injected
      */
-    static appendToDocument(id, element) {
-        document.getElementById(id).appendChild(element);
+    static appendToDocument(parent, element) {
+        parent.appendChild(element);
     }
 
     /**
@@ -85,7 +88,7 @@ export default class NameplateSupplier {
      * @param data data according to README.md specification
      * @param nameplateSvg
      */
-    static writeHeadingToSvg(data, nameplateSvg) {
+    static writeHeadingToSvg(data, nameplateSvg, dom) {
         const idShort_xSpace = 20;
         const idShort_ySpace = 35;
         const idShort_fontSize = 30;
@@ -97,6 +100,8 @@ export default class NameplateSupplier {
         // TODO: find best maxChars for MPD
         const MPD_maxChars = 100;
 
+        // const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
+
         const header = {};
         if (data['OrderCode'] && data['OrderCode'].length < idShort_maxChars) {
             header['OrderCode'] = data['OrderCode'];
@@ -104,13 +109,13 @@ export default class NameplateSupplier {
             this.CURRENT_IDSHORT = data['OrderCode'];
             delete data['OrderCode'];
 
-            let newText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            let newText = dom.window.document.createElementNS('http://www.w3.org/2000/svg', 'text');
             newText.setAttributeNS(null, 'x', idShort_xSpace + 'px');
             newText.setAttributeNS(null, 'y', idShort_ySpace + 'px');
             newText.setAttributeNS(null, 'font-size', idShort_fontSize + 'px');
             newText.setAttributeNS(null, 'font-weight', 'bold');
 
-            let textNode = document.createTextNode(`${header['OrderCode']}`);
+            let textNode = dom.window.document.createTextNode(`${header['OrderCode']}`);
             newText.appendChild(textNode);
             nameplateSvg.appendChild(newText);
         }
@@ -118,13 +123,13 @@ export default class NameplateSupplier {
             header['ManufacturerProductDesignation'] = data['ManufacturerProductDesignation'];
             delete data['ManufacturerProductDesignation'];
 
-            let newText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            let newText = dom.window.document.createElementNS('http://www.w3.org/2000/svg', 'text');
             newText.setAttributeNS(null, 'x', MPD_xSpace + 'px');
             newText.setAttributeNS(null, 'y', MPD_ySpace + 'px');
             newText.setAttributeNS(null, 'font-size', MPD_fontSize + 'px');
             newText.setAttributeNS(null, 'font-style', 'italic');
 
-            let textNode = document.createTextNode(`${header['ManufacturerProductDesignation']}`);
+            let textNode = dom.window.document.createTextNode(`${header['ManufacturerProductDesignation']}`);
             newText.appendChild(textNode);
             nameplateSvg.appendChild(newText);
         }
@@ -135,7 +140,7 @@ export default class NameplateSupplier {
      * @param input data according to README.md specification
      * @param nameplateSvg the nameplate svg element
      */
-    static writeTextToSvg(input, nameplateSvg) {
+    static writeTextToSvg(input, nameplateSvg, dom) {
         const data = structuredClone(input);
         const maxDisplay = 16;
         // TODO: richtige maximale anzahl an chars per line finden für Darstellung
@@ -145,6 +150,8 @@ export default class NameplateSupplier {
         const lineHeight = 25;
         const xSpace = 20;
         const ySpace = 105;
+
+        // const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
 
         const priorityDisplay = ['TelephoneNumber', 'EmailAddress', 'AddressOfAdditionalLink', 'AssetRef'];
         const displayWithoutIdentifier = ['id'];
@@ -161,12 +168,12 @@ export default class NameplateSupplier {
             const parts = data['Address'].split('\n');
             preCount = parts.length;
             parts.forEach((part, i) => {
-                let newText = document.createElementNS(svgNS, 'text');
+                let newText = dom.window.document.createElementNS(svgNS, 'text');
                 newText.setAttributeNS(null, 'x', xSpace + 'px');
                 newText.setAttributeNS(null, 'y', ySpace + lineHeight * i + 'px');
                 newText.setAttributeNS(null, 'font-size', fontSize + 'px');
 
-                let textNode = document.createTextNode(`${part}`);
+                let textNode = dom.window.document.createTextNode(`${part}`);
                 newText.appendChild(textNode);
                 nameplateSvg.appendChild(newText);
             });
@@ -178,12 +185,12 @@ export default class NameplateSupplier {
             if (!data[display]) {
                 return;
             }
-            let newText = document.createElementNS(svgNS, 'text');
+            let newText = dom.window.document.createElementNS(svgNS, 'text');
             newText.setAttributeNS(null, 'x', xSpace + 'px');
             newText.setAttributeNS(null, 'y', ySpace + lineHeight * preCount + 'px');
             newText.setAttributeNS(null, 'font-size', fontSize + 'px');
 
-            let textNode = document.createTextNode(`${data[display]}`);
+            let textNode = dom.window.document.createTextNode(`${data[display]}`);
             delete data[display];
             newText.appendChild(textNode);
             nameplateSvg.appendChild(newText);
@@ -197,7 +204,7 @@ export default class NameplateSupplier {
             if (!Boolean(keys[i]) || !Boolean(data[keys[i]])) {
                 continue;
             }
-            let newText = document.createElementNS(svgNS, 'text');
+            let newText = dom.window.document.createElementNS(svgNS, 'text');
             newText.setAttributeNS(null, 'x', xSpace + 'px');
             newText.setAttributeNS(null, 'y', ySpace + lineHeight * preCount + 'px');
             newText.setAttributeNS(null, 'font-size', fontSize + 'px');
@@ -205,9 +212,9 @@ export default class NameplateSupplier {
             let textNode;
 
             if (displayWithoutIdentifier.includes(keys[i])) {
-                textNode = document.createTextNode(`${data[keys[i]]}`);
+                textNode = dom.window.document.createTextNode(`${data[keys[i]]}`);
             } else {
-                textNode = document.createTextNode(`${keys[i]}: ${data[keys[i]]}`);
+                textNode = dom.window.document.createTextNode(`${keys[i]}: ${data[keys[i]]}`);
             }
             newText.appendChild(textNode);
             nameplateSvg.appendChild(newText);
@@ -242,14 +249,15 @@ export default class NameplateSupplier {
      * @param links Array of links to all the marking images that shall be displayed on the nameplate
      * @returns {Promise<string[]>} Promise resolving to array of dataUrls of images
      */
-    static convertFilePathsToDataUrls(links) {
+    static convertFilePathsToDataUrls(links, dom) {
+        // const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
         return new Promise((resolve, reject) => {
             const promises = links.map((link) => {
                 return new Promise((resolve) => {
                     const img = new Image();
                     img.crossOrigin = 'Anonymous';
                     img.onload = () => {
-                        const canvas = document.createElement('canvas');
+                        const canvas = dom.window.document.createElement('canvas');
                         canvas.width = img.width;
                         canvas.height = img.height;
                         const ctx = canvas.getContext('2d');
@@ -276,9 +284,9 @@ export default class NameplateSupplier {
      * @param markings markings according to README.md specification
      * @returns {Promise<string[]>} Promise resolving to array of dataUrls of images
      */
-    static extractAllImagesFromMarkings(markings) {
+    static extractAllImagesFromMarkings(markings, dom) {
         const filePaths = this.extractFilePathsFromMarkings(markings);
-        return this.convertFilePathsToDataUrls(filePaths);
+        return this.convertFilePathsToDataUrls(filePaths, dom);
     }
 
     /**
@@ -286,7 +294,7 @@ export default class NameplateSupplier {
      * @param markingImages extracted FilePath values according to function extractImagesFromMarkings()
      * @param nameplateSvg the nameplate svg - markings are displayed on here
      */
-    static displayMarkingImages(markingImages, nameplateSvg) {
+    static displayMarkingImages(markingImages, nameplateSvg, dom) {
         const maxDisplay = 7;
         // following values are in pixels
         const height = 100;
@@ -295,10 +303,12 @@ export default class NameplateSupplier {
         const ySpace = 485;
         const space = 20;
 
+        // const dom = new jsdom.JSDOM("<!DOCTYPE html><p>Placeholder</p>")
+
         const limit = markingImages.length < maxDisplay ? markingImages.length : maxDisplay;
 
         for (let i = 0; i < limit; i++) {
-            let svgImg = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+            let svgImg = dom.window.document.createElementNS('http://www.w3.org/2000/svg', 'image');
             svgImg.setAttributeNS(null, 'height', height + 'px');
             svgImg.setAttributeNS(null, 'width', width + 'px');
             svgImg.setAttributeNS('http://www.w3.org/1999/xlink', 'href', markingImages[i]);
