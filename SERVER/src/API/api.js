@@ -69,6 +69,7 @@ const server = http.createServer(async (req, res) => {
                             res.statusCode = 400;
                             res.setHeader('Content-Type', 'text/plain');
                             res.end();
+                            return;
                         }
                         const nameplate = NameplateGenerator.nameplateBootstrap(j, "testNR1")
 
