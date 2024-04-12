@@ -34,7 +34,7 @@ module.exports = class NameplateGenerator {
         const qrCodeOffsetX = 500;
         const qrCodeOffsetY = 85;
 
-        const dom = new jsdom.JSDOM('<!DOCTYPE html><div id="x">Placeholder</div>')
+        const dom = new jsdom.JSDOM(`<!DOCTYPE html><div id="${id}">Placeholder</div>`)
 
         // this is the root svg in which the nameplate is build
         // TODO: Disable border again
@@ -69,7 +69,7 @@ module.exports = class NameplateGenerator {
 
         // the svg's are appended to the DOM before the qr-code is created, because the 'makeQrCode()' function needs to find
         // the svg-elements by 'document.getElementById()'
-        let domElement = dom.window.document.getElementById("x");
+        let domElement = dom.window.document.getElementById(id);
         domElement.innerHTML = '';
         NameplateSupplier.appendToDocument(domElement, nameplateSvg);
         NameplateSupplier.appendToDocument(nameplateSvg, qrCodeSvg);

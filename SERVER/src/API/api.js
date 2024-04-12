@@ -11,12 +11,12 @@ const server = http.createServer(async (req, res) => {
 
         case '':
             // try {
-                console.log(__dirname)
-                const index = await fs.readFile(__dirname + "/../../assets/index.html");
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'text/html');
-                res.write(index);
-                res.end();
+            console.log(__dirname)
+            const index = await fs.readFile(__dirname + "/../../assets/index.html");
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'text/html');
+            res.write(index);
+            res.end();
             // } catch {
             //     res.statusCode = 500;
             //     res.setHeader('Content-Type', 'text/plain');
@@ -32,20 +32,65 @@ const server = http.createServer(async (req, res) => {
             break;
 
         case 'test':
-            let j;
-            await fs.readFile(__dirname + "/test.json")
-                .then((data) => {
-                    j = JSON.parse(data);
-                    console.log("PARSING")
-                });
-            // console.log(j);
+            if (req.method === "GET") {
+                let j;
+                await fs.readFile(__dirname + "/test.json")
+                    .then((data) => {
+                        j = JSON.parse(data);
+                        console.log("PARSING")
+                    });
+                // console.log(j);
 
-            const nameplate = NameplateGenerator.nameplateBootstrap(j, "testNR1")
+                const nameplate = NameplateGenerator.nameplateBootstrap(j, "testNR1")
 
-            res.statusCode = 200;
-            res.setHeader('Content-Type', 'text/html');
-            res.write(nameplate.outerHTML) // to string for transfer
-            res.end();
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'text/html');
+                res.write(nameplate.outerHTML) // to string for transfer
+                res.end();
+                break;
+            }
+
+            break;
+        case "NameplateGenerateByData":
+            if (req.method === "POST") {
+                console.log("POST")
+                try {
+                    let body = "";
+                    req.on("data", chunk => {
+                        console.log(chunk.toString())
+                        body = chunk.toString();
+                    });
+                    req.on("end", async () => {
+                        let j;
+                        try{
+                         j = JSON.parse(body);
+                        }
+                        catch (error){
+                            res.statusCode = 400;
+                            res.setHeader('Content-Type', 'text/plain');
+                            res.end();
+                        }
+                        const nameplate = NameplateGenerator.nameplateBootstrap(j, "testNR1")
+
+                        res.statusCode = 200;
+                        res.setHeader('Content-Type', 'text/html');
+                        res.write(nameplate.outerHTML) // to string for transfer
+                        res.end();
+
+                    });
+                }
+                catch (error){
+                    res.statusCode = 500;
+                    res.setHeader('Content-Type', 'text/plain');
+                    res.end();
+                }
+            }
+            else {
+                console.log("405")
+                res.statusCode = 405;
+                res.setHeader('Content-Type', 'text/plain');
+                res.end();
+            }
             break;
     }
 })
