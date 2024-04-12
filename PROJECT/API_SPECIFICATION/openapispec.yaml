@@ -105,7 +105,7 @@ paths:
               - sold
         - name: Nameplate
           in: query
-          description: Name of the company
+          description: Nameplate data
           required: false
           explode: true
           schema:
