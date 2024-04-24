@@ -71,12 +71,19 @@ const server = http.createServer(async (req, res) => {
                             res.end();
                             return;
                         }
+                        try{
                         const nameplate = NameplateGenerator.nameplateBootstrap(j, "testNR1")
 
                         res.statusCode = 200;
                         res.setHeader('Content-Type', 'text/html');
                         res.write(nameplate.outerHTML) // to string for transfer
                         res.end();
+                        }
+                        catch (error){
+                            res.statusCode = 500;
+                            res.setHeader('Content-Type', 'text/plain');
+                            res.end();
+                        }
 
                     });
                 }
