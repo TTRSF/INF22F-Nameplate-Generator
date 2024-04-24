@@ -102,6 +102,22 @@ module.exports = class NameplateGenerator {
         })
     }
 
+    static returnQrCodeOnly(text) {
+        let qrCode;
+        const settings = {
+            type: "svg",
+            errorCorrectionLevel: 'M',
+            margin: 6
+        }
+        QRCode.toString(text, settings, (error, string) => {
+            if (error) {
+                throw error;
+            }
+            qrCode = string;
+        })
+        return qrCode;
+    }
+
     static createBorderForQRCode(dom) {
         const qrCodeSize = 400;
         const qrCodeOffsetX = 500;

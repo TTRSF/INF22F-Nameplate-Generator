@@ -31,7 +31,7 @@ const server = http.createServer(async (req, res) => {
             res.end();
             break;
 
-        case 'test':
+        case 'testNameplate':
             if (req.method === "GET") {
                 let j;
                 await fs.readFile(__dirname + "/test.json")
@@ -42,15 +42,28 @@ const server = http.createServer(async (req, res) => {
                 // console.log(j);
 
                 const nameplate = NameplateGenerator.nameplateBootstrap(j, "testNR1")
+                console.log(nameplate)
 
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'text/html');
                 res.write(nameplate.outerHTML) // to string for transfer
                 res.end();
-                break;
             }
-
             break;
+
+        case 'testQrCode':
+            if (req.method === "GET") {                
+                let qrCode = NameplateGenerator.returnQrCodeOnly('Test QR Code!')
+                console.log(qrCode)
+
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'text/html');
+                res.write(qrCode) // to string for transfer
+                res.end();
+            }
+            break;
+
+        
         case "NameplateGenerateByData":
             if (req.method === "POST") {
                 console.log("POST")
