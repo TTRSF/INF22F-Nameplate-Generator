@@ -121,27 +121,22 @@ const server = http.createServer(async (req, res) => {
             break;
         case "NameplateGenerateByReference":
             if (req.method === "GET") {
-                console.log(split_route[1])
-                console.log("1")
 
-                console.log("3")
-                const refinery = new DataRefinery(split_route[1]);
-                console.log("4")
-                console.log(split_route[2])
-                data = await refinery.getData(split_route[2])
-                console.log("HIER")
-                console.log(data)
-                console.log("finish")
 
 
                 try {
+                    const refinery = new DataRefinery(split_route[1]);
 
+                    data = await refinery.getData(split_route[2])
 
+                    const nameplate = NameplateGenerator.nameplateBootstrap(data, "testNR1")
 
                     res.statusCode = 200;
                     res.setHeader('Content-Type', 'text/html');
-
+                    res.write(nameplate.outerHTML) // to string for transfer
                     res.end();
+                    break;
+
                 }
 
                 catch (error) {
