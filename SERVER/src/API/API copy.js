@@ -41,3 +41,11 @@ function addressShellList() {
     return "shells";
 }
 
+export {
+    addressShellList,
+    submodelPathsV1,
+    submodelPathsV3
+}
+
+
+

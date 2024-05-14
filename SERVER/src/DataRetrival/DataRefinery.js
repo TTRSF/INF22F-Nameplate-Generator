@@ -1,21 +1,18 @@
-import DataExtractor from "./DataExtractor.js";
-import {
-    addressShellList,
-    submodelPathsV1,
-    submodelPathsV3
-} from "./API.js";
+const DataExtractor = require("./DataExtractor")
+const { addressShellList, submodelPathsV1, submodelPathsV3 } = require("./API")
 
-export default class DataRefinery {
+
+module.exports = class DataRefinery {
 
     requestCount = {}
 
-    constructor(serverBaseAddress) {
-        if (serverBaseAddress.endsWith("/")) {
-            this.serverBaseAddress = serverBaseAddress;
+    constructor(serverAddress) {
+        if (serverAddress.endsWith("/")) {
+            this.serverAddress = serverAddress;
         } else {
-            this.serverBaseAddress = serverBaseAddress + "/";
+            this.serverAddress = serverAddress + "/";
         }
-        this.apiVersion = undefined;
+        this.apiVersion = 3;
     }
 
     async getAPIVersion() {
@@ -28,11 +25,16 @@ export default class DataRefinery {
         })
     }
 
+
+    async getData() {
+
+    }
+
     async getFullAASList() {
-        return this.#getDataFromServer(this.serverBaseAddress + addressShellList())
+        return this.#getDataFromServer(this.serverAddress + addressShellList())
             .then(response => {
                 if (!response || (Object.hasOwn(response, 'success/') && !response.success)) {
-                    throw new Error(this.serverBaseAddress + addressShellList())
+                    throw new Error(this.serverAddress + addressShellList())
                 }
                 return response.map((obj, index) => {
                     let assetId = obj["identification"] ? obj["identification"]["id"] : obj["id"]
@@ -40,7 +42,7 @@ export default class DataRefinery {
                     if (obj["submodels"]) {
                         submodels = obj["submodels"].map((submodelReference) => {
                             return new Promise(async (resolve, reject) => {
-                                if(submodelReference["keys"].length===0) {
+                                if (submodelReference["keys"].length === 0) {
                                     return reject("No Reference");
                                 }
                                 let submodelReferenceId = submodelReference["keys"][0]["value"]
@@ -56,7 +58,7 @@ export default class DataRefinery {
                                 let submodelData = {}
                                 let tryCount = 1
                                 for (const submodelPath of submodelPaths) {
-                                    submodelData = await this.#getDataFromServer(this.serverBaseAddress + submodelPath.submodel, true)
+                                    submodelData = await this.#getDataFromServer(this.serverAddress + submodelPath.submodel, true)
                                         .then((result) => {
                                             let submodelDataArray
                                             if (!result) return undefined
@@ -68,13 +70,13 @@ export default class DataRefinery {
                                             let returnData = {}
                                             for (const submodelDataElement of submodelDataArray) {
                                                 let submodelName = submodelDataElement.idShort
-                                                let submodelID = apiVersion === 3?submodelReferenceId:submodelDataElement.identification.id
+                                                let submodelID = apiVersion === 3 ? submodelReferenceId : submodelDataElement.identification.id
                                                 let extractedSubmodelData
                                                 let de = new DataExtractor(submodelDataElement["submodelElements"])
                                                 if (apiVersion === 3) {
-                                                    extractedSubmodelData = de.extractAllDataV3(this.serverBaseAddress + submodelPath.submodelElements)
+                                                    extractedSubmodelData = de.extractAllDataV3(this.serverAddress + submodelPath.submodelElements)
                                                 } else {
-                                                    extractedSubmodelData = de.extractAllDataV1(this.serverBaseAddress + submodelPath.submodelElements)
+                                                    extractedSubmodelData = de.extractAllDataV1(this.serverAddress + submodelPath.submodelElements)
                                                 }
 
                                                 returnData = {
@@ -82,7 +84,7 @@ export default class DataRefinery {
                                                     [submodelName]: {
                                                         idShort: submodelName,
                                                         id: submodelID,
-                                                        semanticId:this.loadSemanticID(submodelDataElement),
+                                                        semanticId: this.loadSemanticID(submodelDataElement),
                                                         ...extractedSubmodelData
                                                     }
                                                 }
@@ -111,13 +113,13 @@ export default class DataRefinery {
                     }
 
 
-                    submodels.map((submodel)=>{
-                        if (!submodel)return
-                        submodel.then((res)=>Object.keys(res).map((key)=>{
-                            if(!(key in assetObject))assetObject[key]=res[key]
-                            if(key === "TechnicalData")assetObject["productImages"] = this.searchForKey(res[key], /[pP]roductImage\d*/)
+                    submodels.map((submodel) => {
+                        if (!submodel) return
+                        submodel.then((res) => Object.keys(res).map((key) => {
+                            if (!(key in assetObject)) assetObject[key] = res[key]
+                            if (key === "TechnicalData") assetObject["productImages"] = this.searchForKey(res[key], /[pP]roductImage\d*/)
                             window.dispatchEvent(new Event("forceUpdate"))
-                        })).catch(()=>{
+                        })).catch(() => {
 
                         })
                     });
@@ -160,7 +162,7 @@ export default class DataRefinery {
             apiVersion = 1
         }
         this.apiVersion = apiVersion
-        window.dispatchEvent(new CustomEvent("apiVersionSet", {detail: {apiVersion: this.apiVersion}}))
+        window.dispatchEvent(new CustomEvent("apiVersionSet", { detail: { apiVersion: this.apiVersion } }))
         return apiVersion
     }
 
@@ -169,8 +171,8 @@ export default class DataRefinery {
      * @param asset The Asset
      * @returns {undefined|string} The value of the assetRef or undefined if not found
      */
-    loadAssetRef(asset){
-        if (asset&&asset["assetRef"]&&asset["assetRef"]["keys"]&&asset["assetRef"]["keys"][0]){
+    loadAssetRef(asset) {
+        if (asset && asset["assetRef"] && asset["assetRef"]["keys"] && asset["assetRef"]["keys"][0]) {
             return asset["assetRef"]["keys"][0]["value"]
         }
         // Get A rev for V3 Servers (Not really AssetRef)
@@ -180,8 +182,8 @@ export default class DataRefinery {
         return undefined
     }
 
-    loadSemanticID(submodel){
-        return submodel&&submodel.semanticId&&submodel.semanticId.keys&&submodel.semanticId.keys[0]&&submodel.semanticId.keys[0].value
+    loadSemanticID(submodel) {
+        return submodel && submodel.semanticId && submodel.semanticId.keys && submodel.semanticId.keys[0] && submodel.semanticId.keys[0].value
     }
 
     /**
@@ -210,9 +212,9 @@ export default class DataRefinery {
             })
             .catch(err => {
                 if (!silent) {
-                    console.log({success: false, text: err})
+                    console.log({ success: false, text: err })
                     this.apiVersion = -1
-                    window.dispatchEvent(new CustomEvent("apiVersionSet", {detail: {apiVersion: this.apiVersion}}))
+                    window.dispatchEvent(new CustomEvent("apiVersionSet", { detail: { apiVersion: this.apiVersion } }))
                 }
                 return undefined
             });

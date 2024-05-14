@@ -254,7 +254,7 @@ module.exports = class NameplateSupplier {
         return new Promise((resolve, reject) => {
             const promises = links.map((link) => {
                 return new Promise((resolve) => {
-                    const img = new Image();
+                    const img = dom.window.document.createElement('img');
                     img.crossOrigin = 'Anonymous';
                     img.onload = () => {
                         const canvas = dom.window.document.createElement('canvas');

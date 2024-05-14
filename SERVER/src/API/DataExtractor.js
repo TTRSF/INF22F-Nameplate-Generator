@@ -1,4 +1,4 @@
-module.exports = class DataExtractor {
+class DataExtractor {
 
     langPreferences = ["de", "en"]
 
