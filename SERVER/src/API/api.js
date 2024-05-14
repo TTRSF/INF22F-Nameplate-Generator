@@ -1,13 +1,18 @@
 const http = require("http")
 const fs = require("fs/promises")
 const NameplateGenerator = require("../NameplateGeneration/NameplateGenerator")
+const DataRefinery = require("../DataRetrival/DataRefinery")
 const port = 8080
+const querystring = require('querystring')
+var url = require('url')
 
 const server = http.createServer(async (req, res) => {
 
     const route = req.url.replace(/^\/|\/$/g, '')
+    console.log(route)
+    const split_route = route.split("?")
 
-    switch (route) {
+    switch (split_route[0]) {
 
         case '':
             // try {
@@ -62,8 +67,27 @@ const server = http.createServer(async (req, res) => {
                 res.end();
             }
             break;
+        case 'test2':
+            if (req.method === "GET") {
+                let j;
+                await fs.readFile(__dirname + "/test3.json")
+                    .then((data) => {
+                        j = JSON.parse(data);
+                        console.log("PARSING")
+                    });
+                // console.log(j);
 
-        
+                const nameplate = NameplateGenerator.nameplateBootstrap(j, "testNR1")
+
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'text/html');
+                res.write(nameplate.outerHTML) // to string for transfer
+                res.end();
+                break;
+            }
+
+            break;
+
         case "NameplateGenerateByData":
             if (req.method === "POST") {
                 console.log("POST")
@@ -75,10 +99,10 @@ const server = http.createServer(async (req, res) => {
                     });
                     req.on("end", async () => {
                         let j;
-                        try{
-                         j = JSON.parse(body);
+                        try {
+                            j = JSON.parse(body);
                         }
-                        catch (error){
+                        catch (error) {
                             res.statusCode = 400;
                             res.setHeader('Content-Type', 'text/plain');
                             res.end();
@@ -100,11 +124,50 @@ const server = http.createServer(async (req, res) => {
 
                     });
                 }
-                catch (error){
+                catch (error) {
                     res.statusCode = 500;
                     res.setHeader('Content-Type', 'text/plain');
                     res.end();
                 }
+            }
+            else {
+                console.log("405")
+                res.statusCode = 405;
+                res.setHeader('Content-Type', 'text/plain');
+                res.end();
+            }
+            break;
+        case "NameplateGenerateByReference":
+            if (req.method === "GET") {
+
+
+
+                try {
+                    // new Class with base route in constructor
+                    const refinery = new DataRefinery(split_route[1]);
+
+                    // get Data for asset id
+                    data = await refinery.getData(split_route[2])
+
+                    // create nameplate for json data from asset id
+                    const nameplate = NameplateGenerator.nameplateBootstrap(data, "testNR1")
+
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'text/html');
+                    res.write(nameplate.outerHTML) // to string for transfer
+                    res.end();
+                    break;
+
+                }
+
+                catch (error) {
+                    res.statusCode = 500;
+                    res.setHeader('Content-Type', 'text/plain');
+                    res.end();
+                }
+
+
+
             }
             else {
                 console.log("405")
@@ -123,3 +186,5 @@ server.listen(port, function (error) {
         console.log('Server is listening on port ' + port);
     }
 })
+
+
