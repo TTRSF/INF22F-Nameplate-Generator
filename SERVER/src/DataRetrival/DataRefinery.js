@@ -29,7 +29,7 @@ module.exports = class DataRefinery {
     async getData(aasid) {
         console.log("6")
 
-        this.#getDataFromServer(this.serverAddress + aasid)
+        return this.#getDataFromServer(this.serverAddress + aasid)
             .then(response => {
                 if (!response || (Object.hasOwn(response, 'success/') && !response.success)) {
                     throw new Error(this.serverAddress + aasid)
@@ -39,7 +39,10 @@ module.exports = class DataRefinery {
                 let submodels = []
                 if (response["submodels"]) {
                     submodels = response["submodels"].map((submodelReference) => {
+                        console.log("rovin")
+                        console.log(submodelReference)
                         return new Promise(async (resolve, reject) => {
+
                             if (submodelReference["keys"].length === 0) {
                                 return reject("No Reference");
                             }
@@ -58,40 +61,41 @@ module.exports = class DataRefinery {
                             console.log("robin2")
                             for (const submodelPath of submodelPaths) {
                                 console.log("robin4")
-                                submodelData = await this.#getDataFromServer(this.serverAddress + submodelPath.submodel, true)
-                                console.log("robin")
-                                let submodelDataArray
-                                if (!submodelData) return undefined
-                                if (Array.isArray(submodelData)) {
-                                    submodelDataArray = submodelData
-                                } else {
-                                    submodelDataArray = [submodelData]
-                                }
-                                let returnData = {}
-                                for (const submodelDataElement of submodelDataArray) {
-                                    let submodelName = submodelDataElement.idShort
-                                    let submodelID = apiVersion === 3 ? submodelReferenceId : submodelDataElement.identification.id
-                                    let extractedSubmodelData
-                                    let de = new DataExtractor(submodelDataElement["submodelElements"])
-                                    if (apiVersion === 3) {
-                                        extractedSubmodelData = de.extractAllDataV3(this.serverAddress + submodelPath.submodelElements)
+                                submodelData = await this.#getDataFromServer(this.serverAddress + submodelPath.submodel, true).then((result) => {
+                                    console.log("robin")
+                                    let submodelDataArray
+                                    if (!result) return undefined
+                                    if (Array.isArray(result)) {
+                                        submodelDataArray = result
                                     } else {
-                                        extractedSubmodelData = de.extractAllDataV1(this.serverAddress + submodelPath.submodelElements)
+                                        submodelDataArray = [result]
                                     }
+                                    let returnData = {}
+                                    for (const submodelDataElement of submodelDataArray) {
+                                        let submodelName = submodelDataElement.idShort
+                                        let submodelID = apiVersion === 3 ? submodelReferenceId : submodelDataElement.identification.id
+                                        let extractedSubmodelData
+                                        let de = new DataExtractor(submodelDataElement["submodelElements"])
+                                        if (apiVersion === 3) {
+                                            extractedSubmodelData = de.extractAllDataV3(this.serverAddress + submodelPath.submodelElements)
+                                        } else {
+                                            extractedSubmodelData = de.extractAllDataV1(this.serverAddress + submodelPath.submodelElements)
+                                        }
 
-                                    returnData = {
-                                        ...returnData,
-                                        [submodelName]: {
-                                            idShort: submodelName,
-                                            id: submodelID,
-                                            semanticId: this.loadSemanticID(submodelDataElement),
-                                            ...extractedSubmodelData
+                                        returnData = {
+                                            ...returnData,
+                                            [submodelName]: {
+                                                idShort: submodelName,
+                                                id: submodelID,
+                                                semanticId: this.loadSemanticID(submodelDataElement),
+                                                ...extractedSubmodelData
+                                            }
                                         }
                                     }
-                                }
-                                console.log("baum2")
-                                console.log(returnData)
-                                return returnData
+                                    console.log("baum2")
+                                    console.log(returnData)
+                                    return returnData
+                                })
 
                                 if (submodelData) {
                                     break;
@@ -116,7 +120,16 @@ module.exports = class DataRefinery {
                 console.log(assetObject)
                 console.log("baum")
 
-
+                submodels.map((submodel) => {
+                    if (!submodel) return
+                    submodel.then((res) => Object.keys(res).map((key) => {
+                        if (!(key in assetObject)) assetObject[key] = res[key]
+                        if (key === "TechnicalData") assetObject["productImages"] = searchForKey(res[key], /[pP]roductImage\d*/)
+                       
+                    })).catch(() => {
+            
+                    })
+                });
 
                 return assetObject
 
