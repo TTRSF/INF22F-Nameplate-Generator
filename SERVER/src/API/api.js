@@ -125,10 +125,13 @@ const server = http.createServer(async (req, res) => {
 
 
                 try {
+                    // new Class with base route in constructor
                     const refinery = new DataRefinery(split_route[1]);
 
+                    // get Data for asset id
                     data = await refinery.getData(split_route[2])
 
+                    // create nameplate for json data from asset id
                     const nameplate = NameplateGenerator.nameplateBootstrap(data, "testNR1")
 
                     res.statusCode = 200;

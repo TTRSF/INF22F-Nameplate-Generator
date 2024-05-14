@@ -1,7 +1,6 @@
 const DataExtractor = require("./DataExtractor")
 const Api = require("./API")
 
-
 module.exports = class DataRefinery {
 
     requestCount = {}
@@ -13,16 +12,6 @@ module.exports = class DataRefinery {
             this.serverAddress = serverAddress + "/";
         }
         this.apiVersion = 3;
-    }
-
-    async getAPIVersion() {
-        return new Promise((resolve) => {
-            if (this.apiVersion) resolve(this.apiVersion)
-            window.addEventListener("apiVersionSet", function mylistener(event) {
-                window.removeEventListener("apiVerionSet", mylistener)
-                resolve(event.detail.apiVersion)
-            })
-        })
     }
 
     // function returns asset data as json
@@ -123,26 +112,6 @@ module.exports = class DataRefinery {
         assetObject = Object.assign(assetObject, submodels)
 
         return assetObject
-    }
-
-
-    /**
-     * Recursively searches the json for any keys that match the regex and gets all files in that location
-     * @param json Object that shall be searched
-     * @param regex Regex to search for keys
-     * @returns {*[]} Array of all the file paths
-     */
-    searchForKey(json, regex) {
-        let returnList = []
-        if (typeof json === "object") {
-            for (let key in json) {
-                if (regex.test(key) && json["FilePath"]) {
-                    returnList.push(json["FilePath"]);
-                }
-                returnList = returnList.concat(this.searchForKey(json[key], regex));
-            }
-        }
-        return returnList;
     }
 
     /**

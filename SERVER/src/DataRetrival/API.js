@@ -1,6 +1,5 @@
 module.exports = class api {
 
-
     static submodelPathsV1(aasIdentifier, submodelIdentifier) {
         return [
             {
@@ -38,10 +37,6 @@ module.exports = class api {
         base64 = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
 
         return base64;
-    }
-
-    static addressShellList() {
-        return "shells";
     }
 
 }
