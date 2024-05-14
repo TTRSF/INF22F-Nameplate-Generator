@@ -56,7 +56,7 @@ const server = http.createServer(async (req, res) => {
             }
 
             break;
-            case 'test2':
+        case 'test2':
             if (req.method === "GET") {
                 let j;
                 await fs.readFile(__dirname + "/test3.json")
@@ -76,7 +76,7 @@ const server = http.createServer(async (req, res) => {
             }
 
             break;
-        
+
         case "NameplateGenerateByData":
             if (req.method === "POST") {
                 console.log("POST")
@@ -122,10 +122,20 @@ const server = http.createServer(async (req, res) => {
         case "NameplateGenerateByReference":
             if (req.method === "GET") {
                 console.log(split_route[1])
+                console.log("1")
+
+                console.log("3")
+                const refinery = new DataRefinery(split_route[1]);
+                console.log("4")
+                console.log(split_route[2])
+                data = await refinery.getData(split_route[2])
+                console.log("HIER")
+                console.log(data)
+                console.log("finish")
 
 
                 try {
-                    
+
 
 
                     res.statusCode = 200;
