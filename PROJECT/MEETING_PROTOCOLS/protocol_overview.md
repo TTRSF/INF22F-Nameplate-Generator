@@ -8,6 +8,11 @@ This document contains all the protocols merged into one. It is separated into m
 4. [Meeting 20.10.2023](#20_10)
 5. [Meeting 27.10.2023](#27_10)
 6. [Meeting 03.11.2023](#03_11)
+7. [Meeting 08.03.2024](#08_03)
+8. [Meeting 15.03.2024](#15_03)
+9. [Meeting 05.04.2024](#05_04)
+10. [Meeting 12.04.2024](#12_04)
+11. [Meeting 03.05.2024](#03_05)
 
 # Meeting  Protocol  of 29.09.2023  <a name="29_09"></a>
 
@@ -254,7 +259,7 @@ Thomas Ekhardt is ill.
 |Thomas Ekhardt|prepare for presentation (ill)|
 |Tristan Kopp|Write protocols & Update ReadMe & prepare for presentation|
 
-# Meeting  Protocol  of 10.11.2023  <a name="10_11"></a>
+# Meeting  Protocol  of 08.03.2024  <a name="08_03"></a>
 
 ## Type of Meeting
 This meeting was a ```Weekly```.
@@ -265,7 +270,6 @@ This protocol was written by ```Tristan Kopp```.
 ## Meeting Participants
 
 * Florian Dörr
-* Simon Lutz 
 * Robin Ernst
 * Thomas Ekhardt
 * Tristan Kopp 
@@ -277,21 +281,169 @@ This meeting took ```1 hour```.
 
 |Agenda          |Summary                      |
 |----------------|-----------------------------|
-|Progress since 03.11.2023|presentation was prepared and held|
-|Presentation|got a lot of feedback (CRS, SRS, PSP, presentation)|
-|New Tasks|see [Work Progress](#10_11_WP)|
+|Recap|SAS is finished --> OpenAPI specification and start development|
+|New Tasks|write OpenAPI specification, Architecture, search Server to run API, OpenAPI specification|
+|Start of devevlopment|Architecture is now in repository. Development should start next Week. Waiting for Server and OpenAPI specification|
 
 ## Problems
-No problems to mention.
+Server to host API dosen't work
 
 
-## Work Progress <a name="10_11_WP"></a>
-
+## Work Progress
 
 |Name            |Task                              |
 |----------------|----------------------------------|
-|Florian Dörr |implement feedback|
-|Simon Lutz|implement feedback|
-|Robin Ernst|implement feedback|
-|Thomas Ekhardt|implement feedback|
-|Tristan Kopp|implement feedback|
+|Florian Dörr |OpenAPI specification|
+|Robin Ernst|Architecture|
+|Thomas Ekhardt|search Server to run API, test planning|
+|Tristan Kopp|OpenAPI specification|
+
+# Meeting  Protocol  of  15.03.2024 <a name="15_03"></a>
+
+## Type of Meeting
+This meeting was a ```Weekly```.
+
+## Protocol Writer
+This protocol was written by ```Tristan Kopp```.
+
+## Meeting Participants
+
+* Florian Dörr
+* Robin Ernst
+* Thomas Ekhardt
+* Tristan Kopp 
+
+## Meeting Duration
+This meeting took ```1 hour```.
+
+## Agenda and Summary
+
+|Agenda          |Summary                     |
+|----------------|-----------------------------|
+|Finished Tasks|OpenAPI Specification, find Server to host API|
+|new Tasks||
+
+## Problems
+
+
+
+## Work Progress
+
+|Name            |Task                              |
+|----------------|----------------------------------|
+|Florian Dörr |planning + API specification|
+|Robin Ernst|developing API|
+|Thomas Ekhardt|Writing test plan|
+|Tristan Kopp|API specification|
+
+# Meeting  Protocol  of 05.04.2024  <a name="05_04"></a>
+
+## Type of Meeting
+This meeting was a ```Weekly```.
+
+## Protocol Writer
+This protocol was written by ```Tristan Kopp```.
+
+## Meeting Participants
+
+* Florian Dörr
+* Robin Ernst
+* Thomas Ekhardt
+* Tristan Kopp 
+
+## Meeting Duration
+This meeting took ```1 hour```.
+
+## Agenda and Summary
+
+|Agenda          |Summary                      |
+|----------------|-----------------------------|
+|Progress since 15.03.|STP done|
+
+## Problems 
+
+
+
+## Work Progress
+
+|Name            |Task                              |
+|----------------|----------------------------------|
+|Florian Dörr |check server for API|
+|Robin Ernst|complete nameplate generation|
+|Thomas Ekhardt|check STP with customer ,AAS fetcher|
+|Tristan Kopp|API endpoints|
+
+# Meeting  Protocol  of  12.04.2024 <a name="12_04"></a>
+
+## Type of Meeting
+This meeting was a ```Weekly```.
+
+## Protocol Writer
+This protocol was written by ```Tristan Kopp```.
+
+## Meeting Participants
+
+* Florian Dörr
+* Robin Ernst
+* Thomas Ekhardt
+* Tristan Kopp 
+
+## Meeting Duration
+This meeting took ```1 hour```.
+
+## Agenda and Summary
+
+|Agenda          |Summary                     |
+|----------------|-----------------------------|
+|Finished Tasks|OpenAPI Specification, find Server to host API|
+|new Tasks||
+
+## Problems
+
+
+
+## Work Progress
+
+|Name            |Task                              |
+|----------------|----------------------------------|
+|Florian Dörr |planning + API specification|
+|Robin Ernst|developing API|
+|Thomas Ekhardt|Writing test plan|
+|Tristan Kopp|API specification|
+
+# Meeting  Protocol  of 03.05.2024  <a name="03_05"></a>
+
+## Type of Meeting
+This meeting was a ```Weekly```.
+
+## Protocol Writer
+This protocol was written by ```Tristan Kopp```.
+
+## Meeting Participants
+
+* Florian Dörr
+* Robin Ernst
+* Thomas Ekhardt
+* Tristan Kopp 
+
+## Meeting Duration
+This meeting took ```1 hour```.
+
+## Agenda and Summary
+
+|Agenda          |Summary                      |
+|----------------|-----------------------------|
+|Progress since 12.04.|API spec done, Review from customer|
+
+## Problems 
+
+
+
+## Work Progress
+
+|Name            |Task                              |
+|----------------|----------------------------------|
+|Florian Dörr |Code Review, Format Checker, PSP|
+|Robin Ernst|BC|
+|Thomas Ekhardt|write Testplan|
+|Tristan Kopp|module documentation|
