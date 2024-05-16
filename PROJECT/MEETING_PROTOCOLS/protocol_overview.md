@@ -11,7 +11,8 @@ This document contains all the protocols merged into one. It is separated into m
 7. [Meeting 08.03.2024](#08_03)
 8. [Meeting 15.03.2024](#15_03)
 9. [Meeting 05.04.2024](#05_04)
-10. [Meeting 03.05.2024](#03_05)
+10. [Meeting 12.04.2024](#12_04)
+11. [Meeting 03.05.2024](#03_05)
 
 # Meeting  Protocol  of 29.09.2023  <a name="29_09"></a>
 
@@ -372,7 +373,7 @@ This meeting took ```1 hour```.
 |Thomas Ekhardt|check STP with customer ,AAS fetcher|
 |Tristan Kopp|API endpoints|
 
-# Meeting  Protocol  of  15.03.2024 <a name="15_03"></a>
+# Meeting  Protocol  of  12.04.2024 <a name="12_04"></a>
 
 ## Type of Meeting
 This meeting was a ```Weekly```.
@@ -432,7 +433,7 @@ This meeting took ```1 hour```.
 
 |Agenda          |Summary                      |
 |----------------|-----------------------------|
-|Progress since 15.03.|STP done|
+|Progress since 12.04.|API spec done, Review from customer|
 
 ## Problems 
 
